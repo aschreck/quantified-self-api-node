@@ -4,7 +4,8 @@ exports.up = function(knex, Promise) {
     id SERIAL PRIMARY KEY NOT NULL,
     name TEXT,
     calories INTEGER,
-    create_at TIMESTAMP
+    create_at TIMESTAMP,
+    updated_at TIMESTAMP
   )`
   return knex.raw(createFoodQuery)
 };
