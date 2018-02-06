@@ -7,7 +7,7 @@ const database = require('knex')(configuration)
 
 router.get('/foods', function(req, res, next){
   let id = req.params.id
-  database.raw("SELECT * FROM foods)
+  database.raw("SELECT * FROM foods")
   .then(function(foods) {
     if (!foods.rows) {
       return res.sendStatus(404)
