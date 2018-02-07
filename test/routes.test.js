@@ -6,6 +6,8 @@ const server = require('../app.js')
 const environment = process.env.NODE_ENV || 'test';
 const configuration = require('../knexfile')[environment];
 const database = require('knex')(configuration);
+// pry = require('pryjs')
+// eval(pry.it)
 
 chai.use(chaiHTTP)
 
@@ -33,6 +35,7 @@ describe("api routes", () =>{
       return chai.request(server)
       .get("/api/v1/foods/1")
       .then((response) => {
+        console.log(response)
         response.should.have.status(200)
         response.should.be.json
         response.body.should.be.a('object')
@@ -62,6 +65,26 @@ describe("api routes", () =>{
         response.body[1].name.should.equal('lunch')
         response.body[2].name.should.equal('dinner')
         response.body[3].name.should.equal('snack')
+      })
+      .catch((error) => {
+        throw error
+      })
+    })
+  })
+
+  describe("GET /api/v1/meals/:meal_id/foods", () => {
+    it('should return all the meal', () => {
+      return chai.request(server)
+      .get("/api/v1/meals/1/foods")
+      .then((response) => {
+        response.should.have.status(200)
+        response.should.be.json
+        response.body.should.be.a('array')
+        response.body[0].should.have.property('id')
+        response.body[0].should.have.property('name')
+        response.body[0].name.should.equal('Vegetables')
+        response.body[0].should.have.property('calories')
+        response.body[0].calories.should.equal(155)
       })
       .catch((error) => {
         throw error
