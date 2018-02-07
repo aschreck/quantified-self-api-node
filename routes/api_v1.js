@@ -6,7 +6,6 @@ const configuration = require('../knexfile')[environment]
 const database = require('knex')(configuration)
 
 router.get('/foods', function(req, res, next){
-  let id = req.params.id
   database.raw("SELECT * FROM foods")
   .then(function(foods) {
     if (!foods.rows) {
@@ -18,12 +17,13 @@ router.get('/foods', function(req, res, next){
 })
 
 router.get('/foods/:id', function(req, res, next){
+  let id = req.params.id
   database.raw("SELECT * FROM foods WHERE id = ?", [id])
   .then(function(foods) {
     if (!foods.rows) {
       return res.sendStatus(404)
     } else {
-      res.json(foods.rows)
+      res.json(foods.rows[0])
     }
   })
 })
