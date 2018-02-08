@@ -23,6 +23,7 @@ function show(req, res, next) {
 function create(req, res, next) {
   let name = req.body.name
   let calories = req.body.calories
+
   Food.new(name, calories)
     .then(function(food) {
       res.status(201).json(food)
