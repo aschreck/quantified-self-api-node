@@ -4,7 +4,7 @@ const database = require('knex')(configuration)
 
 var Food = {
   all: database.raw('SELECT * FROM foods')
-    .then(function(foods) {
+    .then(function (foods) {
       return foods.rows
     }),
 
@@ -33,9 +33,6 @@ var Food = {
 
   destroy: function (id) {
     return database.raw('DELETE FROM foods WHERE id = ?', [id])
-      .then(function (food) {
-        return food
-      })
   }
 }
 
