@@ -33,6 +33,12 @@ app.use(sassMiddleware({
 app.use(express.static(path.join(__dirname, 'public')));
 app.options('*', cors())
 
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "https://mikeyduece.github.io");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, PATCH, POST, DELETE");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  next();
+});
 app.use('/', index);
 app.use('/api/v1', apiV1);
 app.use('/users', users);
