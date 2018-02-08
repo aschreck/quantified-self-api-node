@@ -2,19 +2,20 @@ var Meal = require('../models/meal')
 
 function index(req, res, next) {
   Meal.all
-    .then((meals) => {
+    .then(function(meals) {
       res.status(201).json(meals)
     })
 }
 
 function show(req, res, next) {
   let id = req.params.id
+
   Meal.find(id)
   .then(function(foods) {
-    if (!foods.rows) {
+    if (!foods) {
       return res.sendStatus(404)
     } else {
-      res.json(foods.rows)
+      res.json(foods)
     }
   })
 }
