@@ -1,7 +1,7 @@
 var Meal = require('../models/meal')
 
 function index(req, res, next) {
-  Meal.all
+  Meal.all()
     .then(function (meals) {
       res.status(201).json(meals)
     })
