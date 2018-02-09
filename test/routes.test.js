@@ -192,8 +192,8 @@ describe("api routes", () => {
       .patch('/api/v1/foods/1')
       .send({ "id": 1, "name": "Cheese", "calories": 100 })
       .then((response) => {
-        response.body[0].name.should.equal('Cheese')
-        response.body[0].calories.should.equal(100)
+        response.body.name.should.equal('Cheese')
+        response.body.calories.should.equal(100)
       })
       .catch((error) => {
         throw error
