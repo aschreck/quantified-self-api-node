@@ -9,23 +9,6 @@ var Meal = {
     .then(function(mealfoods){
       return mealfoods.rows
     })
-    // return database.raw('SELECT * FROM meals')
-    //   .then((meals) => {
-    //     return Promise.all(
-    //       meals.rows.map(function (meal) {
-    //         let id = meal.id
-    //         // return database.raw('SELECT meals.id, meals.name, foods.* from meals join mealfoods ON meals.id = mealfoods.meal_id join foods on foods.id = mealfoods.food_id WHERE meals.id = ?;', [id])
-    //         return database.raw('SELECT meals.*, row_to_json(f.*) as foodmeal FROM meals INNER JOIN foods f USING(id);')
-    //           .then(foods => {
-    //             let mealWithFoods = { id: meal.id, name: meal.name, foods: foods.rows }
-    //             return mealWithFoods
-    //           })
-    //       })
-    //     )
-    //       .then(allmeals => {
-    //         return allmeals
-    //       })
-    //   })
   },
 
   find: function (id) {
