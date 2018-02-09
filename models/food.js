@@ -18,8 +18,6 @@ var Food = {
   find: function (id) {
     return database.raw('SELECT * FROM foods WHERE id = ?', [id])
       .then(function (food) {
-        // pry = require('pryjs')
-        // eval(pry.it)
         return food.rows[0]
       })
   },

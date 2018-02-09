@@ -7,8 +7,6 @@ var Meal = {
   all: function () {
     return database.raw('SELECT m.*, json_agg(f.*) AS foods FROM meals m INNER JOIN mealfoods mf ON m.id = mf.meal_id INNER JOIN foods f ON mf.food_id = f.id GROUP BY m.id')
     .then(function(mealfoods){
-      pry = require('pryjs')
-      eval(pry.it)
       return mealfoods.rows
     })
   },
