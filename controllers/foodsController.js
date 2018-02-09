@@ -46,10 +46,8 @@ function update(req, res, next) {
 
 function destroy(req, res, next) {
   let id = req.params.id
-
-  Food.find(id)
+  Food.destroy(id)
     .then(food => {
-      Food.destroy(id)
       return res.sendStatus(200)
     })
 }
