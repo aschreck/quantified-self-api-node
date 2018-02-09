@@ -2,44 +2,47 @@ const environment = process.env.NODE_ENV || 'development'
 const configuration = require('../knexfile')[environment]
 const database = require('knex')(configuration)
 
-//problem: we need to build the json response so that it also has the meals associated with it.
 var Meal = {
 
-  all: function() {
-    database.raw('SELECT * FROM meals')
-    .then(function(meals) {
-    return Promise.all(
-      meals.rows.map(function(meal){
-        return database.raw('SELECT * FROM foods WHERE id=?', [meal.id])
-        .then(function(foods) {
-          return mealWithFoods = {id: meal.id, name: meal.name, foods: foods.rows}
-        })
+  all: function () {
+    return database.raw('SELECT * FROM meals;')
+      .then((meals) => {
+        return Promise.all(
+          meals.rows.map(function (meal) {
+            let id = meal.id
+            return database.raw('SELECT meals.id, meals.name, foods.* from meals join mealfoods ON meals.id = mealfoods.meal_id join foods on foods.id = mealfoods.food_id WHERE meals.id = ?;', [id])
+              .then(foods => {
+                let mealWithFoods = { id: meal.id, name: meal.name, foods: foods.rows }
+                return mealWithFoods
+              })
+          })
+        )
+          .then(allmeals => {
+            return allmeals
+          })
       })
-    )
-    .then(function(allmeals) {
-      return allmeals
-    })
-  })
-},
-  //construct an array of promises. For each item in row, create a promise
-
-  find: function (id) {
-    return database.raw('SELECT * FROM(foods INNER JOIN mealfoods ON foods.id = mealfoods.meal_id) AS t WHERE t.meal_id = 1')
-    .then(function (foods) {
-     return foods.rows
-    })
   },
 
-  new: function (meal_id, food_id) {
-    return database.raw('INSERT INTO mealfoods (meal_id, food_id) VALUES (?,?)', [meal_id, food_id])
-    .then(function (food) {
-      return food.rows
-    })
+  find: function (mealId) {
+    return database.raw(`SELECT foods.id, foods.name, foods.calories FROM foods
+      INNER JOIN mealfoods on foods.id=mealfoods.food_id
+      WHERE mealfoods.meal_id=?`, [mealId])
+      .then(function (foods) {
+        return foods.rows
+      })
   },
 
-  destroy: function (meal_id, food_id) {
-    return database.raw('DELETE FROM mealfoods WHERE meal_id = ? AND food_id = ?', [meal_id, food_id])
+  new: function (mealId, foodId) {
+    return database.raw('INSERT INTO mealfoods (meal, food) VALUES (?,?) RETURNING *',
+      [mealId, foodId])
+      .then(function (meal) {
+        return meal.rows[0]
+      })
+  },
+
+  destroy: function (mealId, foodId) {
+    return database.raw('DELETE FROM mealfoods WHERE mealfoods.meal_id = ? AND mealfoods.food_id =?', [mealId, foodId])
   }
 }
 
-module.exports = Meal
+module.exports = Meal;
