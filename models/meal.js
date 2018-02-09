@@ -12,7 +12,7 @@ var Meal = {
   },
 
   find: function (id) {
-    return database.raw('SELECT * FROM(foods INNER JOIN mealfoods ON foods.id = mealfoods.meal_id) AS t WHERE t.meal_id = 1')
+    return database.raw('SELECT * FROM(foods INNER JOIN mealfoods ON foods.id = mealfoods.meal_id) AS t WHERE t.meal_id = ?', [id])
       .then(function (foods) {
         return foods.rows
       })
