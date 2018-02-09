@@ -5,7 +5,7 @@ const database = require('knex')(configuration)
 var Meal = {
 
   all: function () {
-    return database.raw('SELECT meals.*, row_to_json(f.*) as foods FROM meals INNER JOIN foods f USING(id)')
+    return database.raw('SELECT m.*, json_agg(f.*) AS foods FROM meals m INNER JOIN meal_foods mf ON m.id = mf.meal_id INNER JOIN foods f ON mf.food_id = f.id GROUP BY m.id')
     .then(function(mealfoods){
       return mealfoods.rows
     })
@@ -13,7 +13,6 @@ var Meal = {
 
   find: function (id) {
     return database.raw("SELECT foods.id, foods.name, foods.calories FROM (foods INNER JOIN mealfoods on foods.id=mealfoods.food_id) WHERE mealfoods.meal_id=?", [id])
-    // return database.raw('SELECT * FROM(foods INNER JOIN mealfoods ON foods.id = mealfoods.meal_id) AS t WHERE t.meal_id = ?', [id])
       .then(function (foods) {
         return foods.rows
       })
