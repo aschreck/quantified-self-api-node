@@ -3,10 +3,11 @@ const configuration = require('../knexfile')[environment]
 const database = require('knex')(configuration)
 
 var Food = {
-  all: database.raw('SELECT * FROM foods')
+  all: function() {database.raw('SELECT * FROM foods')
     .then(function (foods) {
       return foods.rows
-    }),
+    })
+  },
 
   new: function (name, calories) {
     return database.raw('INSERT INTO foods (name, calories) VALUES (?,?) RETURNING *', [name, calories])
