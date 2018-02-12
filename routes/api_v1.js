@@ -7,11 +7,11 @@ var router = express.Router();
 var foodsController = require('../controllers/foodsController')
 var mealsController = require('../controllers/mealsController')
 
-router.get('/foods', foodsController.index);
-router.get('/foods/:id', foodsController.show);
-router.post('/foods', foodsController.create);
-router.delete('/foods/:id', foodsController.destroy);
-router.patch('/foods/:id', foodsController.update);
+router.get('/foods', foodsController.index)
+router.get('/foods/:id', foodsController.show)
+router.post('/foods', foodsController.create)
+router.delete('/foods/:id', foodsController.destroy)
+router.patch('/foods/:id', foodsController.update)
 
 router.get('/meals', mealsController.index)
 router.get('/meals/:id/foods', mealsController.show)
